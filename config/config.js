@@ -29,17 +29,8 @@ function validateConfig() {
     process.exit(1);
   }
 
-  const serviceAccountPath = path.resolve(process.env.FIREBASE_SERVICE_ACCOUNT_PATH);
-  if (!fs.existsSync(serviceAccountPath)) {
-    console.error(`Firebase service account file not found at: ${serviceAccountPath}`);
-    console.error('\n--- Setup Instructions ---');
-    console.error('1. Go to https://console.firebase.google.com');
-    console.error('2. Create a project called "wizz-air-ptfs-bot"');
-    console.error('3. Go to Project Settings > Service Accounts > Generate new private key');
-    console.error('4. Rename it to "firebase-service-account.json"');
-    console.error('5. Place it in the credentials/ folder');
-    process.exit(1);
-  }
+  // We removed the file check here because it was crashing when the path was missing.
+  // The firebase/init.js now handles this safely.
 }
 
 validateConfig();
@@ -55,7 +46,7 @@ module.exports = {
   },
   firebase: {
     projectId: process.env.FIREBASE_PROJECT_ID,
-    serviceAccountPath: path.resolve(process.env.FIREBASE_SERVICE_ACCOUNT_PATH)
+    serviceAccountPath: process.env.FIREBASE_SERVICE_ACCOUNT_PATH || './credentials/firebase-service-account.json'
   },
   dashboard: {
     port: parseInt(process.env.DASHBOARD_PORT) || 3000,
