@@ -1,4 +1,3 @@
-const { SlashCommandBuilder, infoEmbed, errorEmbed } = require('discord.js'); // Wait, I'll fix the imports
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { staffOnly } = require('../../utils/permissions');
 const { blacklist } = require('../../firebase/collections');
