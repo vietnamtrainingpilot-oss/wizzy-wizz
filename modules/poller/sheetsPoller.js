@@ -7,10 +7,24 @@ const { getClient } = require('../../utils/botClient');
 const config = require('../../config/config');
 
 async function getSheetsClient() {
-  const auth = new google.auth.GoogleAuth({
-    keyFile: config.firebase.serviceAccountPath,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-  });
+  let auth;
+  const serviceAccountPath = require('../../config/config').firebase.serviceAccountPath;
+
+  if (require('fs').existsSync(serviceAccountPath)) {
+    auth = new google.auth.GoogleAuth({
+      keyFile: serviceAccountPath,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+  } else if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+    const credentials = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+    auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+  } else {
+    throw new Error('No Google Sheets credentials found (neither file nor environment variable).');
+  }
+
   return google.sheets({ version: 'v4', auth });
 }
 
