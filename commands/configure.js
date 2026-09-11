@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { infoEmbed, errorEmbed } = require('../../utils/embeds');
-const { serverConfig } = require('../../firebase/collections');
+const { infoEmbed, errorEmbed } = require('../utils/embeds');
+const { serverConfig } = require('../firebase/collections');
 
 module.exports = {
   data: new SlashCommandBuilder()
